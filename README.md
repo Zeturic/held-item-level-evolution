@@ -42,7 +42,7 @@ Now you can set up these evolutions in PGE.
 
 ### Notes
 
-One of the hooks required to make the item removal work properly is that this prevents level-triggered evolutions (e.g. happiness, specific level, beauty) from overriding one another.
+One of the hooks required to make the item removal work properly prevents level-triggered evolutions (e.g. happiness, specific level, beauty) from overriding one another.
 
 Normally, if a Pokémon qualifies for multiple LTEs, it is the lastmost slot that actually determines the evolution. For example, if you had a Pokémon with a friendship evolution in slot 1 and a beauty evolution in slot 2, if the Pokémon was both friendly and beautiful, it would always take the beauty evolution.
 
