@@ -1,6 +1,8 @@
 ## Evolve by Leveling Up While Holding An Item
 
-Adds evolution methods to allow Pokémon to evolve by leveling up while holding a particular item. This does not include day or night specific variations.
+Adds evolution methods to allow Pokémon to evolve by leveling up while holding a particular item.
+
+This does not include day or night specific variations. For those variations, see the [timeful branch](https://github.com/Zeturic/held-item-level-evolution/tree/timeful).
 
 Other implementations of this evolution method have subtle bugs - they remove the item even if the player hits Ⓑ to cancel the evolution. This avoids that.
 
