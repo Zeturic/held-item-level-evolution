@@ -54,9 +54,8 @@ MON_DATA_BEAUTY equ 23
         bl @@call
 
         mov r1, r7
-        mov r2, EVOLUTIONS_PER_POKEMON
+        mov r2, EVOLUTIONS_PER_POKEMON * 8
         mul r1, r2
-        lsl r1, #3
         add r1, r4      
         add r1, r5
 
@@ -123,7 +122,7 @@ MON_DATA_BEAUTY equ 23
         ldr r0, [sp, #4]
         add r0, #1
         str r0, [sp, #4]
-        cmp r0, #4
+        cmp r0, EVOLUTIONS_PER_POKEMON - 1
         bgt @@return2
         mov r0, r10
         cmp r0, #0
