@@ -6,9 +6,11 @@ test_gba equ "test.gba"
 // the number of evolution slots each Pokemon gets
 evolutions_per_pokemon equ 5
 
-// the id for this evolution method
+// the id for these evolution methods
 // e.g. Level up is 4 and trade is 5
 EVO_HELD_ITEM equ 16
+EVO_HELD_ITEM_DAY equ 17
+EVO_HELD_ITEM_NIGHT equ 18
 
 // where you want the code to be inserted
 // make sure it is word aligned (ends in 0, 4, 8, or C)
@@ -22,3 +24,8 @@ hook equ true
 // the flag to coordinate clearing the item
 // if hook is set to false, it will never be read or set by this code
 FLAG_HELD_ITEM_EVOLUTION equ 0x2FF
+
+// night lasts [night_start, night_end)
+// from night_start to night_end but not including night_end
+night_start equ 21      // 9pm
+night_end equ 6         // 6am

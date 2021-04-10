@@ -2,7 +2,7 @@
 
 Adds evolution methods to allow Pokémon to evolve by leveling up while holding a particular item.
 
-This does not include day or night specific variations. For those variations, see the [timeful branch](https://github.com/Zeturic/held-item-level-evolution/tree/timeful).
+This branch includes day and night variations for use with Happiny, Gligar, and Sneasel. The RTC itself is not included.
 
 Other implementations of this evolution method have subtle bugs - they remove the item even if the player hits Ⓑ to cancel the evolution. This avoids that.
 
@@ -16,11 +16,17 @@ Normally, each Pokémon only gets `5` evolution slots. If you've changed this at
 
 Pick an evolution id for `Level w/ Item`. In a vanilla game, the first unused one is `16`, so use that if this is the first evolution method you're adding. Make the definition of `EVO_HELD_ITEM` match your choice.
 
-Decide where you want the code to be inserted. This requires `200` bytes of free space, starting from a word-aligned (ending in `0`, `4`, `8`, or `C`) offset. Record your choice in the definition of `free_space`.
+Pick an evolution id for `Level w/ Item (Day)`. Make the definition of `EVO_HELD_ITEM_DAY` match your choice.
+
+Pick an evolution id for `Level w/ Item (Night)`. Make the definition of `EVO_HELD_ITEM_NIGHT` match your choice.
+
+Decide where you want the code to be inserted. This requires `236` bytes of free space, starting from a word-aligned (ending in `0`, `4`, `8`, or `C`) offset. Record your choice in the definition of `free_space`.
 
 In order to coordinate removing the item at the right time, a few hooks and an otherwise unused scripting flag are required. Update the definition of `FLAG_HELD_ITEM_EVOLUTION` to your choice of flag if the default `0x2FF` doesn't work for you.
 
 If, however, you don't care about removing the item, you can disable that entirely by changing the definition of `hook` to `false`. If you do this, `FLAG_HELD_ITEM_EVOLUTION` will never be read or set, Pokémon will not have their item removed upon evolving using this method, and the actual used space in your ROM will be somewhat smaller. To be clear, the Pokémon will still be required to be holding the specified item in order to evolve.
+
+You can modify what counts as night with `night_start` and `night_end`. By default, night starts at 9pm and lasts until 6am.
 
 Place your ROM into this folder and rename it `rom.gba`.
 
@@ -32,12 +38,16 @@ Open a command prompt / terminal, and run `armips level-with-item.asm`. Your out
 
 The relevant keys in the ini are `NumberOfEvolutionTypes`, `EvolutionNameX` and `EvolutionXParam`.
 
-For the sake of example, I will assume this is the first evolution method you're adding and it was added as 16. I would do:
+For the sake of example, I will assume these were the first evolution methods you've added and they were added 16, 17, and 18. I would do:
 
 ```ini
-NumberOfEvolutionTypes=16
+NumberOfEvolutionTypes=18
 EvolutionName16=Level w/ Item
 Evolution16Param=item
+EvolutionName17=Level w/ Item (Day)
+Evolution17Param=item
+EvolutionName18=Level w/ Item (Night)
+Evolution18Param=item
 ```
 
 Now you can set up these evolutions in PGE.

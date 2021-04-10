@@ -26,6 +26,8 @@ false equ 0
 .definelabel off_8042FC0, 0x08042FC0
 .definelabel jpt_8042FB8, readu32(rom_gba, off_8042FC0 & 0x1FFFFFF)
 
+.definelabel rtc_hour, 0x03005542
+
 MON_DATA_SPECIES equ 11
 MON_DATA_HELD_ITEM equ 12
 MON_DATA_BEAUTY equ 23
@@ -39,7 +41,7 @@ MON_DATA_BEAUTY equ 23
 
 .org free_space
 
-.area 200
+.area 236
     .align 2
 
     level_with_item:
@@ -82,6 +84,28 @@ MON_DATA_BEAUTY equ 23
 
     @@call:
         bx r3
+
+    level_with_item_at_night:
+        ldr r0, =rtc_hour
+        ldrb r0, [r0]
+        cmp r0, night_start
+        bhs level_with_item
+        cmp r0, night_end
+        blo level_with_item
+        ldr r0, =noevo |1
+        bx r0
+
+    level_with_item_during_day:
+        ldr r0, =rtc_hour
+        ldrb r0, [r0]
+        cmp r0, night_start
+        bhs @@noevo
+        cmp r0, night_end
+        blo @@noevo
+        b level_with_item
+    @@noevo:
+        ldr r0, =noevo |1
+        bx r0
 
     // intercepts the code responsible for updating the species after a
     // successful evolution, to conditionally remove the held item
@@ -158,6 +182,12 @@ MON_DATA_BEAUTY equ 23
 
 .org jpt_8042FB8 + (EVO_HELD_ITEM -1) * 4
 .word level_with_item
+
+.org jpt_8042FB8 + (EVO_HELD_ITEM_DAY -1) * 4
+.word level_with_item_during_day
+
+.org jpt_8042FB8 + (EVO_HELD_ITEM_NIGHT -1) * 4
+.word level_with_item_at_night
 
 .if hook
     .org Task_EvolutionScene_hook_addr
